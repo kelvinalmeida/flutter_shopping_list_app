@@ -17,13 +17,19 @@ class GroceryItemList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(name),
+      title: Text(
+        name,
+        style: const TextStyle(fontSize: 16),
+      ),
       leading: Container(
         width: 24,
         height: 24,
         color: category.color,
       ),
-      trailing: Text(quantity.toString()),
+      trailing: Text(
+        quantity.toString(),
+        style: const TextStyle(fontSize: 16),
+      ),
     );
   }
 }
