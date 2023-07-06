@@ -38,6 +38,13 @@ class _GroceryListState extends State<GroceryList> {
       });
     }
 
+    if (response.body == 'null') {
+      setState(() {
+        _isLoading = false;
+      });
+      return;
+    }
+
     final Map<String, dynamic> listData = json.decode(response.body);
 
     final List<GroceryItem> _loadedItems = [];
@@ -75,6 +82,18 @@ class _GroceryListState extends State<GroceryList> {
     });
   }
 
+  void _removeItem(GroceryItem item) {
+    final url = Uri.https(
+        'flutter-shopping-list-2893b-default-rtdb.firebaseio.com',
+        'shopping-list/${item.id}.json');
+
+    http.delete(url);
+
+    setState(() {
+      _groceryItems.remove(item);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
@@ -108,9 +127,7 @@ class _GroceryListState extends State<GroceryList> {
               ),
               key: ValueKey(_groceryItems[index].id),
               onDismissed: (DismissDirection direction) {
-                setState(() {
-                  _groceryItems.remove(_groceryItems[index]);
-                });
+                _removeItem(_groceryItems[index]);
               },
               child: GroceryItemList(
                 id: _groceryItems[index].id,
